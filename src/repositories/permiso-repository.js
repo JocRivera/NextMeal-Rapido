@@ -31,4 +31,5 @@ export class PermisoRepository {
       where: { id: idUsuario }
     });
   }
+  
 }

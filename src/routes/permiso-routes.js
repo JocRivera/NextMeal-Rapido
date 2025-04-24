@@ -1,7 +1,8 @@
 import express from "express";
 import {
   obtenerPermisos,
-  obtenerPermisosPorUsuario,
+  obtenerPorUsuario,
+  obtenerPermisoPorId,
   crearPermiso,
   actualizarPermiso,
   eliminarPermiso,
@@ -20,10 +21,16 @@ routerPermisos.get(
   "/usuario/:id",
   autenticar,
   autorizarAdmin,
-  obtenerPermisosPorUsuario
+  obtenerPorUsuario
 );
 routerPermisos.post("/", autenticar, autorizarAdmin, crearPermiso);
 routerPermisos.put("/:id", autenticar, autorizarAdmin, actualizarPermiso);
 routerPermisos.delete("/:id", autenticar, autorizarAdmin, eliminarPermiso);
+routerPermisos.get(
+  "/:id",
+  autenticar,
+  autorizarAdmin,
+  obtenerPermisoPorId
+);
 
 export default routerPermisos;

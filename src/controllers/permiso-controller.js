@@ -4,7 +4,7 @@ const permisoService = new PermisoService();
 
 export const obtenerPermisos = async (req, res) => {
   try {
-    const permisos = await permisoService.obtenerPermisos();
+    const permisos = await permisoService.obtenerTodosLosPermisos();
     res.json({ exito: true, permisos });
   } catch (error) {
     console.error("Error al obtener permisos:", error);
@@ -12,11 +12,11 @@ export const obtenerPermisos = async (req, res) => {
   }
 };
 
-export const obtenerPermisosPorUsuario = async (req, res) => {
+export const obtenerPorUsuario = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const permisos = await permisoService.obtenerPermisosPorUsuario(id);
+    const permisos = await permisoService.obtenerPorUsuario(id);
     res.json({ exito: true, permisos });
   } catch (error) {
     console.error("Error al obtener permisos del usuario:", error);
@@ -29,7 +29,7 @@ export const crearPermiso = async (req, res) => {
 
   try {
     // Verificar si el permiso ya existe
-    const permisosExistentes = await permisoService.obtenerPermisosPorUsuario(id);
+    const permisosExistentes = await permisoService.obtenerPorUsuario(id);
     const permisoExistente = permisosExistentes.find(
       p => p.recurso === recurso && p.accion === accion
     );
@@ -97,4 +97,23 @@ export const eliminarPermiso = async (req, res) => {
     console.error("Error al eliminar permiso:", error);
     res.status(500).json({ exito: false, mensaje: "Error al eliminar permiso" });
   }
+
 };
+
+export const obtenerPermisoPorId = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const permiso = await permisoService.obtenerPermisoPorId(id);
+
+    if (!permiso) {
+      return res.status(404).json({ exito: false, mensaje: "Permiso no encontrado" });
+    }
+
+    res.json({ exito: true, permiso });
+  } catch (error) {
+    console.error("Error al obtener permiso:", error);
+    res.status(500).json({ exito: false, mensaje: "Error al obtener permiso" });
+  }
+};
+
